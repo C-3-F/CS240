@@ -13,6 +13,8 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.nio.file.Paths;
+
 public class TrieTest {
 
 
@@ -215,6 +217,7 @@ public class TrieTest {
         add("baboon");
         add("car");
         add("car");
+
         try {
             BufferedReader in = new BufferedReader(new FileReader(
                     FILENAME));
@@ -224,6 +227,7 @@ public class TrieTest {
             }
             in.close();
         } catch (FileNotFoundException e) {
+            e.printStackTrace();
             System.out.println("FileNotFoundException");
             System.exit(-1);
         } catch (IOException e) {

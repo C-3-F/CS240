@@ -1,5 +1,7 @@
 package spell;
 
+import static org.junit.jupiter.api.Assertions.fail;
+
 public class Trie implements ITrie {
 
     private Node root = new Node();
@@ -66,6 +68,7 @@ public class Trie implements ITrie {
         for (int i = 0; i < children.length; i++) {
             if (children[i] != null) {
                 sum += i;
+                sum += children[i].getValue();
             }
         }
         sum += wordCount + nodeCount;
@@ -113,7 +116,6 @@ public class Trie implements ITrie {
         if (currNodeA.getValue() != currNodeB.getValue()) {
             return false;
         }
-
         for (int i = 0; i < currNodeA.getChildren().length; i++) {
             var childA = currNodeA.getChildren()[i];
             var childB = currNodeB.getChildren()[i];
@@ -121,7 +123,12 @@ public class Trie implements ITrie {
                 return false;
             } else if (childA != null && childB != null) {
 
-                return equalsHelper(childA, childB);
+                var temp = equalsHelper(childA, childB);
+                if (!temp)
+                {
+                    return false;
+                }
+
             } else {
             }
         }
