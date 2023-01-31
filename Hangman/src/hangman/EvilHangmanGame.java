@@ -20,6 +20,8 @@ public class EvilHangmanGame implements IEvilHangmanGame {
     private String mapKey = "";
 
     public void startGame(File dictionary, int wordLength) throws IOException, EmptyDictionaryException {
+        _dictionary.clear();
+        mapKey = "";
         var scanner = new Scanner(dictionary);
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < wordLength; i++) {
@@ -33,7 +35,7 @@ public class EvilHangmanGame implements IEvilHangmanGame {
                 scanner.close();
                 throw new EmptyDictionaryException("Dictionary contains invalid characters");
             }
-            if (word.length() >= wordLength) {
+            if (word.length() == wordLength) {
                 _dictionary.add(word);
             }
         }
@@ -46,6 +48,9 @@ public class EvilHangmanGame implements IEvilHangmanGame {
     }
 
     public Set<String> makeGuess(char guess) throws GuessAlreadyMadeException {
+
+        guess = Character.toLowerCase(guess);
+
         if (_guessedLetters.contains(guess)) {
             throw new GuessAlreadyMadeException();
         }
@@ -57,8 +62,9 @@ public class EvilHangmanGame implements IEvilHangmanGame {
             var wordChars = w.toCharArray();
             for (int i = 0; i < wordChars.length; i++) {
                 if (wordChars[i] == guess) {
-                    sb.delete(i, i);
                     sb.insert(i, guess);
+                    sb.deleteCharAt(i+1);
+
                 }
             }
             var partitionSet = wordPartition.get(sb.toString());
@@ -85,7 +91,8 @@ public class EvilHangmanGame implements IEvilHangmanGame {
         }
 
         mapKey = biggestSetKey;
-        return biggestSet;
+        _dictionary = biggestSet;
+        return _dictionary;
     }
 
     public SortedSet<Character> getGuessedLetters() {
@@ -97,6 +104,10 @@ public class EvilHangmanGame implements IEvilHangmanGame {
     }
 
     private boolean determineTiebreaker(String originalKey, String tiebreakerKey, char guess) {
+        if (originalKey == tiebreakerKey)
+        {
+            return false;
+        }
         if (tiebreakerKey == mapKey) { // Checks if the biggest set is the one that didn't add the letter.
             return true;
         } else {
@@ -104,7 +115,7 @@ public class EvilHangmanGame implements IEvilHangmanGame {
             var tieSetKeyChars = tiebreakerKey.toCharArray();
             int bigGuessCharCount = 0;
             int tieGuessCharCount = 0;
-            for (int i = biggestSetKeyChars.length - 1; i > 0; i--) { // Iterates through each set and tallies
+            for (int i = biggestSetKeyChars.length - 1; i >= 0; i--) { // Iterates through each set and tallies
                                                                       // amount
                 // of times the new letter was added
                 if (biggestSetKeyChars[i] == guess) {
@@ -118,7 +129,7 @@ public class EvilHangmanGame implements IEvilHangmanGame {
                 return true;
             }
             if (tieGuessCharCount == bigGuessCharCount) {
-                for (int i = biggestSetKeyChars.length - 1; i > 0; i--) {
+                for (int i = biggestSetKeyChars.length - 1; i >= 0; i--) {
                     if (biggestSetKeyChars[i] == guess && tieSetKeyChars[i] == guess) {
                         continue;
                     }
