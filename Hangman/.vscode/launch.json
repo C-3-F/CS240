@@ -16,7 +16,7 @@
       "request": "launch",
       "mainClass": "hangman.EvilHangman",
       "projectName": "Hangman_14a59ef3",
-      "args": ["dictionary.txt", "5", "12"]
+      "args": ["dictionary.txt", "6", "26"]
     }
   ]
 }
