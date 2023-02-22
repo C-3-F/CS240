@@ -1,0 +1,18 @@
+package apiContract;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class LoadResponse {
+    /**
+     * A message indicating the result of the call
+     */
+    public String message;
+
+    /**
+     * A status result indicating whether the call was successful
+     */
+    public boolean success;
+}
