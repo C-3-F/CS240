@@ -1,5 +1,9 @@
 package apiContract;
 
+
+/**
+ * The response object returned when calling the Clear endpoint
+ */
 public class ClearResponse {
     /**
      * Message indicating the result of the clear

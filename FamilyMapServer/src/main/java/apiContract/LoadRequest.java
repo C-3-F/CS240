@@ -4,6 +4,9 @@ import java.util.List;
 
 import models.*;
 
+/**
+ * The request object sent when calling the Load endpoint
+ */
 public class LoadRequest {
     /**
      * A List of users to load into the database

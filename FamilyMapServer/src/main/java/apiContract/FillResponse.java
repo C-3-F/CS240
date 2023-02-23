@@ -1,5 +1,8 @@
 package apiContract;
 
+/**
+ * The response object returned when calling the fill endpoint
+ */
 public class FillResponse {
     /**
      * Status message indiating the result of the call

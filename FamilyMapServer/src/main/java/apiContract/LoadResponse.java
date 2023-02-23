@@ -1,10 +1,14 @@
 package apiContract;
 
-import lombok.Getter;
-import lombok.Setter;
+// import lombok.Getter;
+// import lombok.Setter;
 
-@Getter
-@Setter
+// @Getter
+// @Setter
+
+/**
+ * The response object returned when calling the load endpoint
+ */
 public class LoadResponse {
     /**
      * A message indicating the result of the call

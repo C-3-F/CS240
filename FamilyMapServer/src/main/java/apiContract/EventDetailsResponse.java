@@ -1,5 +1,9 @@
 package apiContract;
 
+
+/**
+ * The response object returned when retrieving the details of an event
+ */
 public class EventDetailsResponse {
     /**
      * Id of the event

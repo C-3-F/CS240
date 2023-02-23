@@ -3,9 +3,14 @@ package services;
 import apiContract.AllEventsResponse;
 import apiContract.EventDetailsResponse;
 
+/**
+ * This service interacts with Events and has the functionality to get details
+ * of events
+ */
 public class EventService {
     /**
      * Gets the details for a single event from a given ID
+     * 
      * @param eventID the EventID to get
      * @return the Event Details Object
      */
@@ -13,11 +18,11 @@ public class EventService {
         return new EventDetailsResponse();
     }
 
-
     /**
      * Gets a list of all the events from a given personID
-     * @param personID  The PersonID to gather events for
-     * @return  A List of all the events
+     * 
+     * @param personID The PersonID to gather events for
+     * @return A List of all the events
      */
     public AllEventsResponse getAllEvents(int personID) {
         return new AllEventsResponse();

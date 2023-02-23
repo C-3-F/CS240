@@ -1,5 +1,10 @@
 package models;
 
+/**
+ * This object represents a Family History Event such as a death, marriage or
+ * birth. It has location information as well as the person data it is
+ * associated with.
+ */
 public class Event {
     /**
      * Id of the event

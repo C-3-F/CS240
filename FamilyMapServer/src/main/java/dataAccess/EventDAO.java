@@ -2,7 +2,11 @@ package dataAccess;
 
 import models.Event;
 
-public class EventRepository {
+
+/**
+ * The DAO that interacts with the Event Database. It has methods to Get, Create, and Clear records.
+ */
+public class EventDAO {
     /**
      * Returns an event from a given ID
      * 

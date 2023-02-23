@@ -1,5 +1,10 @@
 package models;
 
+/**
+ * This object represents a User of the application. Not to be confused with a
+ * Person which is a Family History Object. Users have a name, email and login
+ * information and their associated PersonID.
+ */
 public class User {
     /**
      * The Username of a user

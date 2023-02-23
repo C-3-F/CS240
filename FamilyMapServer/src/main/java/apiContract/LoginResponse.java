@@ -1,10 +1,14 @@
 package apiContract;
 
-import lombok.Getter;
-import lombok.Setter;
+// import lombok.Getter;
+// import lombok.Setter;
 
-@Getter
-@Setter
+
+/**
+ * The response object returned from a login request.
+ */
+// @Getter
+// @Setter
 public class LoginResponse {
     /**
      * The newly generated authToken for the request

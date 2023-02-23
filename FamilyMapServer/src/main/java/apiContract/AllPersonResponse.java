@@ -4,6 +4,10 @@ import java.util.List;
 
 import models.Person;
 
+
+/**
+ * The response object returned when retrieving all persons
+ */
 public class AllPersonResponse {
     /**
      * List of all of the persons returned from the call

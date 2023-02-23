@@ -2,6 +2,11 @@ package services;
 
 import apiContract.*;
 
+/**
+ * This service is responsible for registering new users into the system.
+ * Similar to the login service, it also handles basic auth and returns new auth
+ * tokens on successful registrations
+ */
 public class RegisterService {
 
     /**

@@ -1,10 +1,15 @@
 package apiContract;
 
-import lombok.Getter;
-import lombok.Setter;
+// import lombok.Getter;
 
-@Getter
-@Setter
+// import lombok.Setter;
+
+/**
+ * The request object sent when registering a new user through the register
+ * endpoint
+ */
+// @Getter
+// @Setter
 public class RegisterRequest {
     /**
      * The username to be registered

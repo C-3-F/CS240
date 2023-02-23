@@ -4,7 +4,9 @@ import java.util.List;
 
 import models.Event;
 
-
+/**
+ * The response object returned when retrieving all events
+ */
 public class AllEventsResponse {
     /**
      * A list of all the Events that get returned

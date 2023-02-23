@@ -2,7 +2,11 @@ package dataAccess;
 
 import models.User;
 
-public class UserRepository {
+
+/**
+ * The DAO that interacts with the User Database. It has methods to Get, Create, and Clear records.
+ */
+public class UserDAO {
     /**
      * Gets a user by a given userID
      * 

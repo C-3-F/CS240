@@ -1,5 +1,8 @@
 package apiContract;
 
+/**
+ * The request object sent when calling the fill endpoint
+ */
 public class FillRequest {
     /**
      * Username of user to fill

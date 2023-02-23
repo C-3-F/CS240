@@ -1,5 +1,10 @@
 package models;
 
+/**
+ * This object represents a person in the Family Tree. It has relationships to
+ * other person objects representing family members. It also connects to an
+ * associated User object.
+ */
 public class Person {
     /**
      * The unique PersonID for the person to be retrieved

@@ -1,10 +1,15 @@
 package apiContract;
 
-import lombok.Getter;
-import lombok.Setter;
+// import lombok.Getter;
 
-@Getter
-@Setter
+// import lombok.Setter;
+
+/**
+ * The response object returned when registering a user through the register
+ * endpoint
+ */
+// @Getter
+// @Setter
 public class RegisterResponse {
     /**
      * The auth token for the newly generated user

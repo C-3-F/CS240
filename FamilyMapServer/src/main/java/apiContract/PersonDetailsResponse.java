@@ -1,10 +1,14 @@
 package apiContract;
 
-import lombok.Getter;
-import lombok.Setter;
+// import lombok.Getter;
+// import lombok.Setter;
 
-@Getter
-@Setter
+
+/**
+ * The response object returned when getting the details for a Person
+ */
+// @Getter
+// @Setter
 public class PersonDetailsResponse {
     /**
      * The unique PersonID for the person to be retrieved

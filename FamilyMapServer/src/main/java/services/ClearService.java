@@ -2,6 +2,10 @@ package services;
 
 import apiContract.ClearResponse;
 
+
+/**
+ * This service is responsible for clearing the database
+ */
 public class ClearService {
 
     /**
