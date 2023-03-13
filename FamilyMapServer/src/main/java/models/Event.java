@@ -50,4 +50,17 @@ public class Event {
      * year the event took place
      */
     public int year;
+
+    public Event(String eventID, String associatedUsername, String personID, float latitude, float longitude,
+            String country, String city, String eventType, int year) {
+        this.eventID = eventID;
+        this.associatedUsername = associatedUsername;
+        this.personID = personID;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.country = country;
+        this.city = city;
+        this.eventType = eventType;
+        this.year = year;
+    }
 }

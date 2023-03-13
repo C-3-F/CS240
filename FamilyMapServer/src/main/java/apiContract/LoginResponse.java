@@ -29,4 +29,11 @@ public class LoginResponse {
      * A status indicator of whether the call was successful
      */
     public boolean success;
+
+    public LoginResponse(String authToken, String username, String personID, boolean success) {
+        this.authToken = authToken;
+        this.username = username;
+        this.personID = personID;
+        this.success = success;
+    }
 }

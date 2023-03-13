@@ -30,4 +30,11 @@ public class RegisterResponse {
      * A Status indicator of whether the call was successful
      */
     public boolean success;
+
+    public RegisterResponse(String authToken, String username, String personID, boolean success) {
+        this.authToken = authToken;
+        this.username = username;
+        this.personID = personID;
+        this.success = success;
+    }
 }
