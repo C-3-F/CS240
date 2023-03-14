@@ -1,6 +1,7 @@
 package dataAccess;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 import exceptions.DataAccessException;
 import models.Event;
@@ -41,6 +42,44 @@ public class EventDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new DataAccessException("Error getting event by ID in DB");
+        }
+    }
+
+    public ArrayList<Event> getEventsByUsername(String username) throws DataAccessException {
+        String sql = "SELECT * FROM Event WHERE associatedUsername = ?";
+        try (PreparedStatement stmt = _conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            var result = stmt.executeQuery();
+            var events = new ArrayList<Event>();
+            while (result.next()) {
+                events.add(new Event(result.getString("eventID"), result.getString("associatedUsername"),
+                        result.getString("personID"), result.getFloat("latitude"), result.getFloat("longitude"),
+                        result.getString("country"), result.getString("city"), result.getString("eventType"),
+                        result.getInt("year")));
+            }
+            return events;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error getting event by Username in DB");
+        }
+    }
+
+    public ArrayList<Event> getPersonsEvents(String personID) throws DataAccessException {
+        String sql = "SELET * FROM Event WHERE personID = ?";
+        try (PreparedStatement stmt = _conn.prepareStatement(sql)) {
+            stmt.setString(1, personID);
+            var result = stmt.executeQuery();
+            var events = new ArrayList<Event>();
+            while (result.next()) {
+                events.add(new Event(result.getString("eventID"), result.getString("associatedUsername"),
+                        result.getString("personID"), result.getFloat("latitude"), result.getFloat("longitude"),
+                        result.getString("country"), result.getString("city"), result.getString("eventType"),
+                        result.getInt("year")));
+            }
+            return events;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            throw new DataAccessException("Error getting person events in DB");
         }
     }
 

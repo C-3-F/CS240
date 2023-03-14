@@ -19,4 +19,9 @@ public class LoadResponse {
      * A status result indicating whether the call was successful
      */
     public boolean success;
+
+    public LoadResponse(String message, boolean success) {
+        this.message = message;
+        this.success = success;
+    }
 }

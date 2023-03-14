@@ -54,4 +54,17 @@ public class PersonDetailsResponse {
      * A Status indicator of whether the call was successful
      */
     public boolean success;
+
+    public PersonDetailsResponse(String personID, String associatedUsername, String firstName, String lastName,
+            String gender, String fatherID, String motherID, String spouseID, boolean success) {
+        this.personID = personID;
+        this.associatedUsername = associatedUsername;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.fatherID = fatherID;
+        this.motherID = motherID;
+        this.spouseID = spouseID;
+        this.success = success;
+    }
 }

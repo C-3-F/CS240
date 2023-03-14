@@ -33,8 +33,8 @@ public class LoginHandler extends BaseHandler {
         } catch (EntityNotFoundException ex) {
             throwError(404, ex.getMessage());
         } catch (Exception ex) {
-            throwError(500, "An Internal Error occured");
             ex.printStackTrace();
+            throwError(500, "An Internal Error occured");
         }
     }
 }

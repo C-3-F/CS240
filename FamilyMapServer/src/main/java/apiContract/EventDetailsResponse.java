@@ -55,6 +55,20 @@ public class EventDetailsResponse {
      */
     public boolean success;
 
+    public EventDetailsResponse(String eventID, String associatedUsername, String personID, float latitude,
+            float longitude, String country, String city, String eventType, int year, boolean success) {
+        this.eventID = eventID;
+        this.associatedUsername = associatedUsername;
+        this.personID = personID;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.country = country;
+        this.city = city;
+        this.eventType = eventType;
+        this.year = year;
+        this.success = success;
+    }
+
     public String getAssociatedUsername() {
         return associatedUsername;
     }

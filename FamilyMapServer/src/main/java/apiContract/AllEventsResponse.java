@@ -1,6 +1,6 @@
 package apiContract;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import models.Event;
 
@@ -11,26 +11,15 @@ public class AllEventsResponse {
     /**
      * A list of all the Events that get returned
      */
-    public List<Event> data;
+    public ArrayList<Event> data;
 
     /**
      * Status result of whether the call was successful
      */
     public boolean success;
 
-    public List<Event> getData() {
-        return data;
-    }
-
-    public void setData(List<Event> data) {
+    public AllEventsResponse(ArrayList<Event> data, boolean success) {
         this.data = data;
-    }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
         this.success = success;
     }
 

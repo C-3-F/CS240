@@ -67,6 +67,28 @@ public class UserDAO {
         }
     }
 
+
+
+
+    public void updateUser(User user) throws DataAccessException {
+        String sql = "UPDATE User password = ?,email = ?,firstName = ?,lastName = ?,gender = ?,personID = ? WHERE username = ?";
+
+        try (PreparedStatement stmt = _conn.prepareStatement(sql)) {
+            stmt.setString(2, user.password);
+            stmt.setString(3, user.email);
+            stmt.setString(4, user.firstName);
+            stmt.setString(5, user.lastName);
+            stmt.setString(6, user.gender);
+            stmt.setString(7, user.personID);
+            stmt.setString(1, user.username);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Unable to create user in database");
+        }
+    }
+
     /**
      * Clears the User table and data inside it
      */

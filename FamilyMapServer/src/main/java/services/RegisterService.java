@@ -1,16 +1,14 @@
 package services;
 
+import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.locks.ReadWriteLock;
 
 import apiContract.*;
 import dataAccess.AuthTokenDAO;
 import dataAccess.Database;
-import dataAccess.PersonDAO;
 import dataAccess.UserDAO;
 import exceptions.DataAccessException;
 import models.AuthToken;
-import models.Person;
 import models.User;
 
 /**
@@ -29,30 +27,24 @@ public class RegisterService {
      * @return a response object containing basic user information and a new auth
      *         token for the newly created user.
      */
-    public RegisterResponse register(RegisterRequest request) throws DataAccessException {
+    public RegisterResponse register(RegisterRequest request) throws DataAccessException, IOException {
         var fillService = new FillService();
         var db = new Database();
         var userDAO = new UserDAO(db.getConnection());
-        var personDAO = new PersonDAO(db.getConnection());
         var authTokenDAO = new AuthTokenDAO(db.getConnection());
 
-        var personID = UUID.randomUUID().toString();
-
-        var newPerson = new Person(personID, request.username, request.firstName, request.lastName, request.gender,
-                null, null, null);
-
         var newUser = new User(request.username, request.password, request.email, request.firstName, request.lastName,
-                request.gender, personID);
+                request.gender, null);
 
         userDAO.createUser(newUser);
 
-        //TODO
-        //PERSONSTUFF
-        personDAO.createPerson(newPerson);
+        fillService.fill(new FillRequest(newUser.username, 4));
 
-        var authToken = new AuthToken(UUID.randomUUID().toString(),request.username);
+        newUser = userDAO.getUserById(newUser.username);
+
+        var authToken = new AuthToken(UUID.randomUUID().toString(), request.username);
         authTokenDAO.create(authToken);
 
-        return new RegisterResponse(authToken.authToken,request.username,newPerson.personID,true);
+        return new RegisterResponse(authToken.authToken, request.username, newUser.personID, true);
     }
 }

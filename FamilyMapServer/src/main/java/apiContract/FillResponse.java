@@ -14,6 +14,11 @@ public class FillResponse {
      */
     public boolean success;
 
+    public FillResponse(String message, boolean success) {
+        this.message = message;
+        this.success = success;
+    }
+
     public String getMessage() {
         return message;
     }

@@ -12,15 +12,17 @@ public class FileHandler extends BaseHandler {
     public void handle(HttpExchange exchange) throws IOException {
         if (exchange.getRequestMethod().toLowerCase().equals("get")) {
             String urlPath = exchange.getRequestURI().toString();
-            if (urlPath == "/" || urlPath == null) {
+            if (urlPath.equals("/") || urlPath == null) {
                 urlPath = "/index.html";
             }
 
             String filePath = "web" + urlPath;
             var file = new File(filePath);
             if (file.exists()) {
+                exchange.sendResponseHeaders(HttpURLConnection.HTTP_OK,0);
                 OutputStream response = exchange.getResponseBody();
                 Files.copy(file.toPath(), response);
+                response.close();
             } else {
                 exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_FOUND, 0);
             }

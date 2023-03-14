@@ -1,7 +1,10 @@
 package handlers;
 
 import java.io.*;
+import java.lang.reflect.Modifier;
 import java.net.*;
+
+import com.google.gson.GsonBuilder;
 import com.sun.net.httpserver.*;
 
 import apiContract.ErrorResponse;
@@ -24,7 +27,7 @@ public abstract class BaseHandler implements HttpHandler {
         success = true;
     }
 
-    protected Object getRequestBody(Object T) throws IOException {
+    protected Object getRequestBody(Class T) throws IOException {
         InputStream reqBody = exchange.getRequestBody();
         StringBuilder sb = new StringBuilder();
         InputStreamReader sr = new InputStreamReader(reqBody);
@@ -35,8 +38,11 @@ public abstract class BaseHandler implements HttpHandler {
         }
         String jsonString = sb.toString();
 
-        var gson = new Gson();
-        var obj = gson.fromJson(jsonString, T.getClass());
+        Gson gson = new GsonBuilder()
+                .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
+                .serializeNulls()
+                .create();
+        var obj = gson.fromJson(jsonString, T);
         return obj;
     }
 

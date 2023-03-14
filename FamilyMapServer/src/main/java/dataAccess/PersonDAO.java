@@ -4,6 +4,7 @@ import models.Person;
 import exceptions.*;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * The DAO that interacts with the Person Database. It has methods to Get,
@@ -44,6 +45,25 @@ public class PersonDAO {
 
     }
 
+    public ArrayList<Person> getPersonsByUsername(String username) throws DataAccessException {
+        String sql = "SELECT * FROM Person WHERE associatedUsername = ?";
+
+        try (PreparedStatement stmt = _conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            var result = stmt.executeQuery();
+            var persons = new ArrayList<Person>();
+            while (result.next()) {
+                persons.add(new Person(result.getString("personID"), result.getString("associatedUsername"),
+                        result.getString("firstName"), result.getString("lastName"), result.getString("gender"),
+                        result.getString("fatherID"), result.getString("motherID"), result.getString("spouseID")));
+            }
+            return persons;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error occurred getting person by Username in database");
+        }
+    }
+
     /**
      * Creates a new person in the database
      * 
@@ -61,6 +81,27 @@ public class PersonDAO {
             stmt.setString(6, person.fatherID);
             stmt.setString(7, person.motherID);
             stmt.setString(8, person.spouseID);
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Error encountered while inserting an event into the database");
+        }
+    }
+
+    public void updatePerson(Person person) throws DataAccessException {
+        String sql = "UPDATE Person SET associatedUsername = ?, firstName = ?, lastName = ?, gender = ?, fatherID = ?, motherID = ?, spouseID = ? WHERE personID = ?;";
+
+        try (PreparedStatement stmt = _conn.prepareStatement(sql)) {
+            stmt.setString(1, person.associatedUsername);
+            stmt.setString(2, person.firstName);
+            stmt.setString(3, person.lastName);
+            stmt.setString(4, person.gender);
+            stmt.setString(5, person.fatherID);
+            stmt.setString(6, person.motherID);
+            stmt.setString(7, person.spouseID);
+            stmt.setString(8, person.personID);
 
             stmt.executeUpdate();
 

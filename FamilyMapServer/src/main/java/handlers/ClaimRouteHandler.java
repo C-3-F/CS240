@@ -119,7 +119,7 @@ class ClaimRouteHandler implements HttpHandler {
 			// Some kind of internal error has occurred inside the server (not the 
 			// client's fault), so we return an "internal server error" status code
 			// to the client.
-			exchange.sendResponseHeaders(HttpURLConnection.HTTP_SERVER_ERROR, 0);
+			exchange.sendResponseHeaders(HttpURLConnection.HTTP_INTERNAL_ERROR, 0);
 			
 			// We are not sending a response body, so close the response body
 			// output stream, indicating that the response is complete.

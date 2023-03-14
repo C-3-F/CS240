@@ -1,4 +1,7 @@
 package handlers;
+
+import java.io.IOException;
+
 import com.sun.net.httpserver.*;
 
 public class FillHandler extends BaseHandler {
@@ -6,6 +9,5 @@ public class FillHandler extends BaseHandler {
     public void handle(HttpExchange exg) throws IOException {
         exchange = exg;
 
-        
     }
 }
