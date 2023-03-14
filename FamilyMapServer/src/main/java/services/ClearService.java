@@ -13,6 +13,7 @@ import exceptions.DataAccessException;
  */
 public class ClearService {
 
+    private Database db;
     private UserDAO userDao;
     private PersonDAO personDAO;
     private AuthTokenDAO authTokenDAO;
@@ -21,7 +22,7 @@ public class ClearService {
     private String outMessage = "";
 
     public ClearService() throws DataAccessException {
-        var db = new Database();
+        db = new Database();
         userDao = new UserDAO(db.getConnection());
         personDAO = new PersonDAO(db.getConnection());
         authTokenDAO = new AuthTokenDAO(db.getConnection());
@@ -42,11 +43,13 @@ public class ClearService {
             authTokenDAO.clear();
             eventDAO.clear();
             success = true;
-            outMessage = "Successfully cleared database tables";
+            outMessage = "Clear succeeded";
         } catch (DataAccessException ex) {
             ex.printStackTrace();
             success = false;
-            outMessage = "Error in clear service";
+            outMessage = "Error: " + ex.getMessage();
+        } finally {
+            db.closeConnection(success);
         }
 
         return new ClearResponse(outMessage, success);

@@ -20,6 +20,7 @@ import models.User;
  */
 public class LoadService {
 
+    private Database db;
     private UserDAO userDAO;
     private PersonDAO personDAO;
     private EventDAO eventDAO;
@@ -27,7 +28,7 @@ public class LoadService {
     private String outMessage = "";
 
     public LoadService() throws DataAccessException {
-        var db = new Database();
+        db = new Database();
         userDAO = new UserDAO(db.getConnection());
         personDAO = new PersonDAO(db.getConnection());
         eventDAO = new EventDAO(db.getConnection());
@@ -36,20 +37,33 @@ public class LoadService {
     /**
      * Clears the current state of the database and then loads in new User, Event,
      * and Person data from the given request
-     * 
+     *
      * @param request an object containing lists of the data to populate
      * @return A response object with the status of the call
      */
     public LoadResponse load(LoadRequest request) {
-        addUsers(request.users);
-        addPersons(request.persons);
-        addEvents(request.events);
-        if (success) {
-            outMessage = "Successfully added " + request.users.size() + " users, " + request.persons.size()
-                    + " persons, and " + request.events.size() + " events to the database";
+        try {
+
+
+            var clearService = new ClearService();
+            clearService.clear();
+            addUsers(request.users);
+            addPersons(request.persons);
+            addEvents(request.events);
+            if (success) {
+                outMessage = "Successfully added " + request.users.size() + " users, " + request.persons.size()
+                        + " persons, and " + request.events.size() + " events to the database";
+            }
+            return new LoadResponse(outMessage, success);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            success = false;
+            return new LoadResponse(ex.getMessage(), success);
+        } finally {
+            db.closeConnection(success);
         }
-        return new LoadResponse(outMessage, success);
     }
+
 
     private void addUsers(ArrayList<User> users) {
         try {

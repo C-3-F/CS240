@@ -14,7 +14,7 @@ public class RegisterResponse {
     /**
      * The auth token for the newly generated user
      */
-    public String authToken;
+    public String authtoken;
 
     /**
      * The final username of the new user
@@ -31,8 +31,8 @@ public class RegisterResponse {
      */
     public boolean success;
 
-    public RegisterResponse(String authToken, String username, String personID, boolean success) {
-        this.authToken = authToken;
+    public RegisterResponse(String authtoken, String username, String personID, boolean success) {
+        this.authtoken = authtoken;
         this.username = username;
         this.personID = personID;
         this.success = success;

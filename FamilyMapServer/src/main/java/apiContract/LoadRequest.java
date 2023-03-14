@@ -23,4 +23,9 @@ public class LoadRequest {
      */
     public ArrayList<Event> events;
 
+    public LoadRequest(ArrayList<User> users, ArrayList<Person> persons, ArrayList<Event> events) {
+        this.users = users;
+        this.persons = persons;
+        this.events = events;
+    }
 }

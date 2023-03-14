@@ -111,6 +111,17 @@ public class PersonDAO {
         }
     }
 
+    public void clearForUser(String username) throws DataAccessException {
+        String sql = "DELETE from Person WHERE associatedUsername = ?";
+        try (PreparedStatement stmt = _conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Unable to clear the Event table for username: " + username);
+        }
+    }
+
     /**
      * Clears the Person database and all data
      */

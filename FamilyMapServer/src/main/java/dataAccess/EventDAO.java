@@ -65,7 +65,7 @@ public class EventDAO {
     }
 
     public ArrayList<Event> getPersonsEvents(String personID) throws DataAccessException {
-        String sql = "SELET * FROM Event WHERE personID = ?";
+        String sql = "SELECT * FROM Event WHERE personID = ?";
         try (PreparedStatement stmt = _conn.prepareStatement(sql)) {
             stmt.setString(1, personID);
             var result = stmt.executeQuery();
@@ -89,7 +89,7 @@ public class EventDAO {
      * @param event the event to insert
      */
     public void createEvent(Event event) throws DataAccessException {
-        String sql = "INSERT INTO Event (eventID,associatedUsername,personID,latitude,longitude,country,city,eventType,year)";
+        String sql = "INSERT INTO Event (eventID,associatedUsername,personID,latitude,longitude,country,city,eventType,year) VALUES(?,?,?,?,?,?,?,?,?)";
 
         try (PreparedStatement stmt = _conn.prepareStatement(sql)) {
             stmt.setString(1, event.eventID);
@@ -106,6 +106,17 @@ public class EventDAO {
         } catch (SQLException ex) {
             ex.printStackTrace();
             throw new DataAccessException("Unable to create new event in DB");
+        }
+    }
+
+    public void clearForUser(String username) throws DataAccessException {
+        String sql = "DELETE from Event WHERE associatedUsername = ?";
+        try (PreparedStatement stmt = _conn.prepareStatement(sql)) {
+            stmt.setString(1, username);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DataAccessException("Unable to clear the Event table for username: " + username);
         }
     }
 

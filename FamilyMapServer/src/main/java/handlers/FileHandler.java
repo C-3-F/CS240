@@ -24,7 +24,12 @@ public class FileHandler extends BaseHandler {
                 Files.copy(file.toPath(), response);
                 response.close();
             } else {
-                exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_FOUND, 0);
+                filePath = "web/HTML/404.html";
+                file = new File(filePath);
+                exchange.sendResponseHeaders(HttpURLConnection.HTTP_NOT_FOUND,0);
+                OutputStream response =exchange.getResponseBody();
+                Files.copy(file.toPath(), response);
+                response.close();
             }
 
         } else {

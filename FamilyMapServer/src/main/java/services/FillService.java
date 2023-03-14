@@ -18,6 +18,7 @@ import dataAccess.EventDAO;
 import dataAccess.PersonDAO;
 import dataAccess.UserDAO;
 import exceptions.DataAccessException;
+import exceptions.EntityNotFoundException;
 import models.Event;
 import models.Person;
 import models.User;
@@ -31,6 +32,7 @@ public class FillService {
     private UserDAO userDAO;
     private PersonDAO personDAO;
     private EventDAO eventDAO;
+    private Database db;
     private ArrayList<String> maleNames;
     private ArrayList<String> femaleNames;
     private ArrayList<String> surnames;
@@ -42,7 +44,7 @@ public class FillService {
 
     public FillService() throws IOException, DataAccessException {
 
-        Database db = new Database();
+        db = new Database();
 
         userDAO = new UserDAO(db.getConnection());
         personDAO = new PersonDAO(db.getConnection());
@@ -70,8 +72,13 @@ public class FillService {
      */
     public FillResponse fill(FillRequest request) {
         try {
-
             var user = userDAO.getUserById(request.username);
+            if (user == null)
+            {
+                throw new EntityNotFoundException("Username doesn't exist");
+            }
+            personDAO.clearForUser(user.username);
+            eventDAO.clearForUser(user.username);
             var userPerson = generateUserPerson(user);
             user.personID = userPerson.personID;
             userDAO.updateUser(user);
@@ -81,13 +88,19 @@ public class FillService {
         } catch (DataAccessException ex) {
             success = false;
             outMessage = "Failure to retrieve user in fill service";
+        } catch(EntityNotFoundException ex) {
+            success = false;
+            outMessage = "Username doesn't exist";
+        }finally
+         {
+            db.closeConnection(success);
         }
         return new FillResponse(outMessage, success);
 
     }
 
     public void fillHelper(int currGen, int generations, Person child) {
-        if (currGen < generations) {
+        if (currGen <= generations) {
             var parents = generateCouple(child);
             generateParentEvents(child.personID);
             fillHelper(currGen + 1, generations, parents.get(0));
@@ -168,27 +181,28 @@ public class FillService {
             // Get child birthday
             int childBirthday = 0;
             for (int i = 0; i < childEvents.size(); i++) {
-                if (childEvents.get(i).eventType == "birth") {
+                if (childEvents.get(i).eventType.equals("birth")) {
                     childBirthday = childEvents.get(i).year;
                 }
             }
 
             // Father
-            var fDates = generateRandom(childBirthday - 35, childBirthday - 18, 2);
-            int fBirth = fDates.get(0);
-            int fMarr = fDates.get(1);
+            int fBirth = childBirthday - generateRandom(18,35, 1).get(0);
             Location marrLocation = getRandomLocation();
-            int fDeath = generateRandom(fBirth + 50, fBirth + 105, 1).get(0);
-            generateEvent(child.fatherID, fBirth, getRandomLocation(), "birth");
-            generateEvent(child.fatherID, fMarr, marrLocation, "marraige");
-            generateEvent(child.fatherID, fDeath, getRandomLocation(), "death");
+            int fDeath = fBirth + generateRandom(50, 105, 1).get(0);
+
+
 
             // Mother
-            int mbirth = generateRandom(childBirthday - 35, childBirthday - 18, 1).get(0);
-            int mMarr = fMarr;
-            int mDeath = generateRandom(mbirth + 50, mbirth + 105, 1).get(0);
+            int mbirth = childBirthday - generateRandom(18, 35, 1).get(0);
+            int highBirth = fBirth > mbirth ? fBirth : mbirth;
+            int marr = generateRandom(highBirth + 15, childBirthday + 5, 1).get(0);
+            int mDeath = mbirth + generateRandom(50, 105, 1).get(0);
+            generateEvent(child.fatherID, fBirth, getRandomLocation(), "birth");
+            generateEvent(child.fatherID, marr, marrLocation, "marriage");
+            generateEvent(child.fatherID, fDeath, getRandomLocation(), "death");
             generateEvent(child.motherID, mbirth, getRandomLocation(), "birth");
-            generateEvent(child.motherID, mMarr, marrLocation, "marraige");
+            generateEvent(child.motherID, marr, marrLocation, "marriage");
             generateEvent(child.motherID, mDeath, getRandomLocation(), "death");
         } catch (DataAccessException ex) {
             ex.printStackTrace();

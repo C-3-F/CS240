@@ -21,6 +21,7 @@ public class LoginService {
     private final UserDAO userDao;
     private final AuthTokenDAO authTokenDAO;
     public final Database db;
+    private boolean success = true;
 
     public LoginService() throws DataAccessException {
         db = new Database();
@@ -35,19 +36,28 @@ public class LoginService {
      * @return a response object that contains a new auth token for the logged in
      *         user
      */
-    public LoginResponse login(LoginRequest request) throws DataAccessException, InvalidPasswordException, EntityNotFoundException {
+    public LoginResponse login(LoginRequest request)
+            throws DataAccessException, InvalidPasswordException, EntityNotFoundException {
 
-        var user = userDao.getUserById(request.username);
-        if (user == null) {
-            throw new EntityNotFoundException("User does not exist");
+        try {
 
-        } else if (request.password != user.password) {
-            throw new InvalidPasswordException("INVALID PASSWORD");
+            var user = userDao.getUserById(request.username);
+            if (user == null) {
+                throw new EntityNotFoundException("User does not exist");
 
-        } else {
-            var authToken = new AuthToken(UUID.randomUUID().toString(), user.username);
-            authTokenDAO.create(authToken);
-            return new LoginResponse(authToken.authToken, user.username, user.personID, true);
+            } else if (!request.password.equals(user.password)) {
+                throw new InvalidPasswordException("INVALID PASSWORD");
+
+            } else {
+                var authToken = new AuthToken(UUID.randomUUID().toString(), user.username);
+                authTokenDAO.create(authToken);
+                return new LoginResponse(authToken.authToken, user.username, user.personID, true);
+            }
+        } catch (Exception ex) {
+            success = false;
+            throw ex;
+        } finally {
+            db.closeConnection(success);
         }
     }
 }

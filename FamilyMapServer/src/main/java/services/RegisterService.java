@@ -17,6 +17,7 @@ import models.User;
  * tokens on successful registrations
  */
 public class RegisterService {
+    private Database db;
 
     /**
      * Register a new user in the system. Creates a new user in the database and
@@ -28,23 +29,41 @@ public class RegisterService {
      *         token for the newly created user.
      */
     public RegisterResponse register(RegisterRequest request) throws DataAccessException, IOException {
-        var fillService = new FillService();
-        var db = new Database();
-        var userDAO = new UserDAO(db.getConnection());
-        var authTokenDAO = new AuthTokenDAO(db.getConnection());
+        try {
 
-        var newUser = new User(request.username, request.password, request.email, request.firstName, request.lastName,
-                request.gender, null);
+            var fillService = new FillService();
+            db = new Database();
+            var userDAO = new UserDAO(db.getConnection());
 
-        userDAO.createUser(newUser);
+            if (userDAO.getUserById(request.username) != null)
+            {
+                throw new DataAccessException("Unique key constraint. Username already exists");
+            }
 
-        fillService.fill(new FillRequest(newUser.username, 4));
+            var newUser = new User(request.username, request.password, request.email, request.firstName, request.lastName,
+            request.gender, null);
 
-        newUser = userDAO.getUserById(newUser.username);
 
-        var authToken = new AuthToken(UUID.randomUUID().toString(), request.username);
-        authTokenDAO.create(authToken);
 
-        return new RegisterResponse(authToken.authToken, request.username, newUser.personID, true);
+            userDAO.createUser(newUser);
+            db.closeConnection(true);
+            
+            fillService.fill(new FillRequest(newUser.username, 4));
+            
+            userDAO = new UserDAO(db.getConnection());
+            newUser = userDAO.getUserById(newUser.username);
+            
+            var authToken = new AuthToken(UUID.randomUUID().toString(), request.username);
+            var authTokenDAO = new AuthTokenDAO(db.getConnection());
+            authTokenDAO.create(authToken);
+            db.closeConnection(true);
+            
+            return new RegisterResponse(authToken.authToken, request.username, newUser.personID, true);
+        } catch (DataAccessException ex)
+        {
+            ex.printStackTrace();
+            db.closeConnection(false);
+            return new RegisterResponse(null, null, null, false);
+        }
     }
 }

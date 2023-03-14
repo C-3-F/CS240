@@ -13,7 +13,7 @@ public class LoginResponse {
     /**
      * The newly generated authToken for the request
      */
-    public String authToken;
+    public String authtoken;
 
     /**
      * The username just authenticated
@@ -30,8 +30,8 @@ public class LoginResponse {
      */
     public boolean success;
 
-    public LoginResponse(String authToken, String username, String personID, boolean success) {
-        this.authToken = authToken;
+    public LoginResponse(String authtoken, String username, String personID, boolean success) {
+        this.authtoken = authtoken;
         this.username = username;
         this.personID = personID;
         this.success = success;

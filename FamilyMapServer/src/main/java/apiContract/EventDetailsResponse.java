@@ -41,7 +41,7 @@ public class EventDetailsResponse {
     public String city;
 
     /**
-     * Type of the event (birth, death, marraige, baptism, christening, etc...)
+     * Type of the event (birth, death, marriage, baptism, christening, etc...)
      */
     public String eventType;
 

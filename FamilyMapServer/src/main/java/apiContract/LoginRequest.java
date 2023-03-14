@@ -19,4 +19,9 @@ public class LoginRequest {
      * The associated password to authenticate with
      */
     public String password;
+
+    public LoginRequest(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 }

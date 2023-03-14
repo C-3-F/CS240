@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Objects;
+
 /**
  * This object represents a Family History Event such as a death, marriage or
  * birth. It has location information as well as the person data it is
@@ -42,7 +44,7 @@ public class Event {
     public String city;
 
     /**
-     * Type of the event (birth, death, marraige, baptism, christening, etc...)
+     * Type of the event (birth, death, marriage, baptism, christening, etc...)
      */
     public String eventType;
 
@@ -62,5 +64,18 @@ public class Event {
         this.city = city;
         this.eventType = eventType;
         this.year = year;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Event event = (Event) o;
+        return Float.compare(event.latitude, latitude) == 0 && Float.compare(event.longitude, longitude) == 0 && year == event.year && eventID.equals(event.eventID) && associatedUsername.equals(event.associatedUsername) && personID.equals(event.personID) && country.equals(event.country) && city.equals(event.city) && eventType.equals(event.eventType);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(eventID, associatedUsername, personID, latitude, longitude, country, city, eventType, year);
     }
 }

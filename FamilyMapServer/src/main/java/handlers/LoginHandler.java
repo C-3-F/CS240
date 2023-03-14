@@ -29,9 +29,9 @@ public class LoginHandler extends BaseHandler {
                 throwError(405, "Method not allowed");
             }
         } catch (InvalidPasswordException ex) {
-            throwError(400, ex.getMessage());
+            throwError(400, "Error: " + ex.getMessage());
         } catch (EntityNotFoundException ex) {
-            throwError(404, ex.getMessage());
+            throwError(400, "Error: " +ex.getMessage());
         } catch (Exception ex) {
             ex.printStackTrace();
             throwError(500, "An Internal Error occured");
