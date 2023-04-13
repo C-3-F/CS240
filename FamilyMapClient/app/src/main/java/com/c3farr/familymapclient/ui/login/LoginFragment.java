@@ -28,6 +28,15 @@ public class LoginFragment extends Fragment {
 
     private LoginViewModel loginViewModel;
     private FragmentLoginBinding binding;
+    private Listener listener;
+
+    public interface Listener {
+        void notifySwitch();
+    }
+
+    public void registerListener(Listener listener) {
+        this.listener = listener;
+    }
 
     @Nullable
     @Override
@@ -155,6 +164,7 @@ public class LoginFragment extends Fragment {
         String toastContent = "First name: " + model.getFirstName() + "\nLast Name: " +model.getLastName();
         if (getContext() != null && getContext().getApplicationContext() != null) {
             Toast.makeText(getContext().getApplicationContext(), toastContent, Toast.LENGTH_LONG).show();
+            listener.notifySwitch();
         }
     }
 

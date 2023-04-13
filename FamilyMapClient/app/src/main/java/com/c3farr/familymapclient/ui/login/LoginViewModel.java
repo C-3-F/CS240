@@ -88,7 +88,7 @@ public class LoginViewModel extends ViewModel {
                 {
                     getPersonDetails(authToken,personId,serverName,serverPort);
                 } else {
-                    loginResult.setValue(new AuthResult(R.string.login_failed));
+                    loginResult.setValue(new AuthResult(R.string.register_failed));
                 }
             }
         };

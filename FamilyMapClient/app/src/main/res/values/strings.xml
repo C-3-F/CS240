@@ -26,6 +26,8 @@
     <string name="genderLabel">Gender:</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="searchIconSelected">Search Selected</string>
+    <string name="settingsIconSelected">Settings Selected</string>
 
 
 
