@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">FamilyMapClient</string>
+    <!-- Strings related to login -->
+
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_register">Register</string>
+    <string name="welcome">"Welcome!"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="register_failed">"Register failed"</string>
+    <string name="emailLabel">Email:</string>
+    <string name="firstNameLabel">First Name:</string>
+    <string name="lastNameLabel">Last Name:</string>
+    <string name="usernameLabel">Username:</string>
+    <string name="passwordLabel">Password:</string>
+    <string name="serverNameLabel">Server Name:</string>
+    <string name="serverPortLabel">Server Port:</string>
+    <string name="emailHintLabel">Email</string>
+    <string name="firstNameHintLabel">First Name</string>
+    <string name="lastNameHintLabel">Last Name</string>
+    <string name="usernameHintLabel">Username</string>
+    <string name="passwordHintLabel">Password</string>
+    <string name="serverNameHintLabel">Server Name</string>
+    <string name="serverPortHintLabel">Server Port</string>
+    <string name="genderLabel">Gender:</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+
+
+
+
+</resources>

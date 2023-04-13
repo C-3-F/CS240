@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import exceptions.DataAccessException;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import services.ClearService;
@@ -13,7 +12,6 @@ import services.LoadService;
 
 import java.io.*;
 
-import static org.junit.jupiter.api.Assertions.*;
 public class LoadServiceTest {
     private LoadService service;
     private String filePath = "passoffFiles/LoadData.json";

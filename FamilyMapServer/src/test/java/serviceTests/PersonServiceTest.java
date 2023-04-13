@@ -4,7 +4,6 @@ import apiContract.PersonRequest;
 import dataAccess.AuthTokenDAO;
 import dataAccess.Database;
 import dataAccess.PersonDAO;
-import dataAccess.UserDAO;
 import exceptions.DataAccessException;
 import exceptions.EntityNotFoundException;
 import exceptions.UnauthorizedException;

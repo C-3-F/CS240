@@ -2,7 +2,6 @@ package dataAccessTests;
 
 import dataAccess.Database;
 import dataAccess.EventDAO;
-import dataAccess.PersonDAO;
 import exceptions.DataAccessException;
 import models.Event;
 import models.Person;
