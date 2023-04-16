@@ -1,5 +1,6 @@
 package com.c3farr.familymapclient.http;
 
+import android.media.metrics.Event;
 import android.util.Log;
 
 import com.google.gson.GsonBuilder;
@@ -21,6 +22,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import apiContract.AllEventsResponse;
+import apiContract.AllPersonResponse;
+import apiContract.EventDetailsResponse;
+import apiContract.EventRequest;
 import apiContract.LoginRequest;
 import apiContract.LoginResponse;
 import apiContract.PersonDetailsResponse;
@@ -33,6 +38,7 @@ public class HttpClient{
     private String baseUrl;
     private final Gson gson;
     private final String logTag = "httpClient";
+    private String authToken;
 
     public HttpClient(String baseUrl)
     {
@@ -43,6 +49,9 @@ public class HttpClient{
                 .create();
     }
 
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
+    }
 
     public LoginResponse login(LoginRequest request) {
         try {
@@ -90,9 +99,10 @@ public class HttpClient{
         return null;
     }
 
-    public PersonDetailsResponse getPersonDetails(PersonRequest request) {
+    public PersonDetailsResponse getPersonDetails(String personId) {
         try {
-            Log.d(logTag,"Here");
+            PersonRequest request = new PersonRequest(authToken,personId);
+            Log.d(logTag,"Get Person Details");
             HttpURLConnection connection = (HttpURLConnection) new URL(baseUrl + "/person/"+request.personID).openConnection();
             connection.setRequestProperty("Authorization",request.authToken);
             connection.setRequestMethod("GET");
@@ -111,6 +121,86 @@ public class HttpClient{
         }
         return null;
     }
+
+    public AllEventsResponse getAllEvents()
+    {
+        try
+        {
+            HttpURLConnection conection = (HttpURLConnection) new URL(baseUrl+ "/event").openConnection();
+            conection.setRequestProperty("Authorizaation", authToken);
+            conection.setRequestMethod("GET");
+            try {
+                AllEventsResponse response = (AllEventsResponse) parseResponse(conection,AllEventsResponse.class);
+                return response;
+            } catch (Exception ex)
+            {
+                Log.e(logTag,ex.getMessage());
+            } finally {
+                conection.disconnect();
+            }
+        } catch (MalformedURLException ex)
+        {
+            Log.e(logTag,"The URL was formatted incorrectly");
+        } catch (Exception ex)
+        {
+            Log.e(logTag, ex.getMessage());
+        }
+        return null;
+    }
+
+
+    public AllPersonResponse getAllPersons()
+    {
+        try
+        {
+            HttpURLConnection conection = (HttpURLConnection) new URL(baseUrl+ "/person").openConnection();
+            conection.setRequestProperty("Authorizaation", authToken);
+            conection.setRequestMethod("GET");
+            try {
+                AllPersonResponse response = (AllPersonResponse) parseResponse(conection,AllPersonResponse.class);
+                return response;
+            } catch (Exception ex)
+            {
+                Log.e(logTag,ex.getMessage());
+            } finally {
+                conection.disconnect();
+            }
+        } catch (MalformedURLException ex)
+        {
+            Log.e(logTag,"The URL was formatted incorrectly");
+        } catch (Exception ex)
+        {
+            Log.e(logTag, ex.getMessage());
+        }
+        return null;
+    }
+
+    public EventDetailsResponse getEventDetails(String eventId)
+    {
+        try
+        {
+            HttpURLConnection conection = (HttpURLConnection) new URL(baseUrl+ "/event/"+eventId).openConnection();
+            conection.setRequestProperty("Authorizaation", authToken);
+            conection.setRequestMethod("GET");
+            try {
+                EventDetailsResponse response = (EventDetailsResponse) parseResponse(conection,EventDetailsResponse.class);
+                return response;
+            } catch (Exception ex)
+            {
+                Log.e(logTag,ex.getMessage());
+            } finally {
+                conection.disconnect();
+            }
+        } catch (MalformedURLException ex)
+        {
+            Log.e(logTag,"The URL was formatted incorrectly");
+        } catch (Exception ex)
+        {
+            Log.e(logTag, ex.getMessage());
+        }
+        return null;
+    }
+
 
     private void postContent(HttpURLConnection connection, Object T)  throws IOException {
             connection.setDoOutput(true);

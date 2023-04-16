@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.c3farr.familymapclient.DataCache;
 import com.c3farr.familymapclient.R;
 import com.c3farr.familymapclient.http.HttpClient;
 
@@ -18,19 +19,17 @@ public class LoginTask implements Runnable{
 
     private final Handler messageHandler;
     private LoginRequest request;
-    private String serverName;
-    private String serverPort;
-    public LoginTask(Handler handler, LoginRequest request, String serverName, String serverPort)
+    private HttpClient httpClient;
+
+    public LoginTask(Handler handler, LoginRequest request)
     {
         messageHandler = handler;
         this.request = request;
-        this.serverName =serverName;
-        this.serverPort = serverPort;
     }
 
     @Override
     public void run() {
-        HttpClient httpClient = new HttpClient("http://"+serverName+":"+serverPort);
+        httpClient = DataCache.getInstance().httpClient;
         LoginResponse result = httpClient.login(request);
         Log.d("loginTask","preSend");
 

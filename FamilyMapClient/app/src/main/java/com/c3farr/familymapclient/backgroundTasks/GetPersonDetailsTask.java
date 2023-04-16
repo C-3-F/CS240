@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.c3farr.familymapclient.DataCache;
 import com.c3farr.familymapclient.http.HttpClient;
 
 import apiContract.LoginResponse;
@@ -13,22 +14,19 @@ import apiContract.PersonRequest;
 
 public class GetPersonDetailsTask implements Runnable{
     private final Handler handler;
-    private PersonRequest request;
-    private String serverName;
-    private String serverPort;
+    private String request;
+    private HttpClient httpClient;
 
-    public GetPersonDetailsTask(Handler handler, PersonRequest request, String servername, String serverPort)
+    public GetPersonDetailsTask(Handler handler, String personId)
     {
         this.handler = handler;
-        this.request = request;
-        this.serverName = servername;
-        this.serverPort = serverPort;
+        this.request = personId;
     }
 
     @Override
     public void run() {
         Log.d("PersonTask","running Person");
-        HttpClient httpClient = new HttpClient("http://"+serverName+":"+serverPort);
+        httpClient = DataCache.getInstance().httpClient;
         Log.d("PersonTask","httpClientCreated");
         PersonDetailsResponse response = httpClient.getPersonDetails(request);
         sendMessage(response);

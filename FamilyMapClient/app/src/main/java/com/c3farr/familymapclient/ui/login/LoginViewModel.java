@@ -11,6 +11,7 @@ import android.os.Message;
 import android.util.Log;
 import android.util.Patterns;
 
+import com.c3farr.familymapclient.DataCache;
 import com.c3farr.familymapclient.R;
 import com.c3farr.familymapclient.backgroundTasks.GetPersonDetailsTask;
 import com.c3farr.familymapclient.backgroundTasks.LoginTask;
@@ -49,6 +50,7 @@ public class LoginViewModel extends ViewModel {
 
     public void login(String username, String password, String serverName, String serverPort) {
         LoginRequest request = new LoginRequest(username,password);
+        DataCache.getInstance().httpClient = new HttpClient("http://"+serverName+":"+serverPort);
 
         Handler loginHandler = new Handler() {
             @Override
@@ -60,20 +62,22 @@ public class LoginViewModel extends ViewModel {
                 Log.d("LoginViewModel","LoginCallback");
                 if (success)
                 {
-                    getPersonDetails(authToken,personId,serverName,serverPort);
+                    DataCache.getInstance().httpClient.setAuthToken(authToken);
+                    getPersonDetails(personId);
                 } else {
                     loginResult.setValue(new AuthResult(R.string.login_failed));
                 }
             }
         };
 
-        LoginTask task = new LoginTask(loginHandler,request,serverName,serverPort);
+        LoginTask task = new LoginTask(loginHandler,request);
         ExecutorService executer = Executors.newSingleThreadExecutor();
         executer.submit(task);
     }
 
     public void register(String username, String password, String serverName, String serverPort, String firstName, String lastName, String email,String gender)
     {
+        DataCache.getInstance().httpClient = new HttpClient("http://"+serverName+":"+serverPort);
         RegisterRequest request = new RegisterRequest(username,password,email,firstName,lastName,gender);
 
         Handler handleRegister = new Handler() {
@@ -86,21 +90,21 @@ public class LoginViewModel extends ViewModel {
                 Log.d("loginViewModel","Register Success: "+success);
                 if (success)
                 {
-                    getPersonDetails(authToken,personId,serverName,serverPort);
+                    DataCache.getInstance().httpClient.setAuthToken(authToken);
+                    getPersonDetails(personId);
                 } else {
-                    loginResult.setValue(new AuthResult(R.string.register_failed));
+                    registerResult.setValue(new AuthResult(R.string.register_failed));
                 }
             }
         };
 
-        RegisterTask task = new RegisterTask(handleRegister,request,serverName,serverPort);
+        RegisterTask task = new RegisterTask(handleRegister,request);
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.submit(task);
     }
 
-    public void getPersonDetails(String authToken, String personId, String serverName, String serverPort)
+    public void getPersonDetails(String personId)
     {
-        PersonRequest personRequest = new PersonRequest(authToken,personId);
         Log.d("viewModel","getPersonDetails() Called");
         Handler getPersonDetailsHandler = new Handler() {
             @Override
@@ -120,9 +124,9 @@ public class LoginViewModel extends ViewModel {
             }
         };
 
-        GetPersonDetailsTask personDetailsTask = new GetPersonDetailsTask(getPersonDetailsHandler,personRequest,serverName,serverPort);
-        ExecutorService personDetailsExecuter = Executors.newSingleThreadExecutor();
-        personDetailsExecuter.submit(personDetailsTask);
+        GetPersonDetailsTask personDetailsTask = new GetPersonDetailsTask(getPersonDetailsHandler,personId);
+        ExecutorService personDetailsExecutor = Executors.newSingleThreadExecutor();
+        personDetailsExecutor.submit(personDetailsTask);
     }
 
 

@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.c3farr.familymapclient.DataCache;
 import com.c3farr.familymapclient.http.HttpClient;
 
 import apiContract.RegisterRequest;
@@ -13,21 +14,18 @@ import apiContract.RegisterResponse;
 public class RegisterTask implements Runnable{
     private Handler handler;
     private RegisterRequest request;
-    private String serverName;
-    private String serverPort;
+    private HttpClient httpClient;
 
-    public RegisterTask(Handler handler, RegisterRequest request, String serverName, String serverPort) {
+    public RegisterTask(Handler handler, RegisterRequest request) {
         this.handler = handler;
         this.request = request;
-        this.serverName = serverName;
-        this.serverPort = serverPort;
     }
 
     @Override
     public void run() {
         Log.d("registerTask","Register task called");
-        HttpClient client = new HttpClient("http://"+serverName+":"+serverPort);
-        RegisterResponse response = client.register(request);
+        httpClient = DataCache.getInstance().httpClient;
+        RegisterResponse response = httpClient.register(request);
         Log.d("registerTask","preSend");
         sendMessage(response);
     }
