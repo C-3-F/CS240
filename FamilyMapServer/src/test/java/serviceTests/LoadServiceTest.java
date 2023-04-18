@@ -12,6 +12,8 @@ import services.LoadService;
 
 import java.io.*;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 public class LoadServiceTest {
     private LoadService service;
     private String filePath = "passoffFiles/LoadData.json";

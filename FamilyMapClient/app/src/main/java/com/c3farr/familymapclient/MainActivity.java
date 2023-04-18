@@ -1,20 +1,15 @@
 package com.c3farr.familymapclient;
 
-import androidx.annotation.NonNull;
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.Toast;
-
 import com.c3farr.familymapclient.ui.login.LoginFragment;
 import com.c3farr.familymapclient.ui.map.MapsFragment;
-
-import java.util.Map;
+import com.joanzapata.iconify.Iconify;
+import com.joanzapata.iconify.fonts.FontAwesomeModule;
 
 public class MainActivity extends AppCompatActivity implements LoginFragment.Listener {
 
@@ -22,6 +17,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Lis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Iconify.with(new FontAwesomeModule());
 
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentFrameLayout);

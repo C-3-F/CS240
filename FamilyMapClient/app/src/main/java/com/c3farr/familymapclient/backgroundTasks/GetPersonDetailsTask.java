@@ -7,28 +7,43 @@ import android.util.Log;
 
 import com.c3farr.familymapclient.DataCache;
 import com.c3farr.familymapclient.http.HttpClient;
+import com.c3farr.familymapclient.uiModels.EventComparator;
 
-import apiContract.LoginResponse;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.TreeSet;
+
 import apiContract.PersonDetailsResponse;
-import apiContract.PersonRequest;
+import models.Event;
+import models.Person;
 
 public class GetPersonDetailsTask implements Runnable{
     private final Handler handler;
     private String request;
+    private DataCache instance;
     private HttpClient httpClient;
+    private String rootPersonId;
+    private HashMap<String,Person> allPersons;
+    private HashMap<String,TreeSet<Event>> allEvents;
 
     public GetPersonDetailsTask(Handler handler, String personId)
     {
         this.handler = handler;
         this.request = personId;
+        allPersons = new HashMap<String, Person>();
+        allEvents = new HashMap<String, TreeSet<Event>>();
     }
 
     @Override
     public void run() {
         Log.d("PersonTask","running Person");
-        httpClient = DataCache.getInstance().httpClient;
+        instance = DataCache.getInstance();
+        httpClient = instance.httpClient;
         Log.d("PersonTask","httpClientCreated");
         PersonDetailsResponse response = httpClient.getPersonDetails(request);
+        rootPersonId = request;
+        instance.rootPerson = new Person(response.personID,response.associatedUsername,response.firstName,response.lastName,response.gender,response.fatherID,response.motherID,response.spouseID);
+        GetInitDataFromServer();
         sendMessage(response);
     }
 
@@ -52,6 +67,30 @@ public class GetPersonDetailsTask implements Runnable{
         }
         message.setData(messageBundle);
         handler.sendMessage(message);
+
+    }
+
+
+    private void GetInitDataFromServer()
+    {
+        ArrayList<Person> personsArray = httpClient.getAllPersons().data;
+        for (Person person : personsArray) {
+            allPersons.put(person.personID,person);
+        }
+
+        ArrayList<Event> eventsArray = httpClient.getAllEvents().data;
+        for (Event event : eventsArray) {
+            TreeSet<Event> thisPersonsEvents = allEvents.get(event.personID);
+            if (thisPersonsEvents == null)
+            {
+                thisPersonsEvents = new TreeSet<Event>(new EventComparator());
+            }
+            thisPersonsEvents.add(event);
+            allEvents.put(event.personID,thisPersonsEvents);
+        }
+
+        instance.allPersons = allPersons;
+        instance.allEvents = allEvents;
 
     }
 }

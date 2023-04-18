@@ -44,7 +44,33 @@
             <artifactId>sqlite-jdbc</artifactId>
             <version>3.36.0.3</version>
         </dependency>
+        <dependency>
+            <groupId>FamilyMapShared</groupId>
+            <artifactId>familyMapShared</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/out/artifacts/FamilyMapShared_jar/FamilyMapShared.jar</systemPath>
+        </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <!-- Build an executable JAR -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <!-- here we specify that we want to use the main method within the App class -->
+                            <mainClass>handlers.Server</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

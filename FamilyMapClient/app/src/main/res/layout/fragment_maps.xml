@@ -1,8 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.map.MapsFragment" />
+    android:gravity="bottom"
+    android:orientation="vertical">
+
+    <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.map.MapsFragment"/>
+
+    <LinearLayout
+        android:id="@+id/eventInformation"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center|center_vertical"
+        android:orientation="horizontal"
+        tools:visibility="gone">
+
+
+        <ImageView
+            android:id="@+id/eventInformationIcon"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/genderLabel"
+            app:srcCompat="@android:drawable/arrow_down_float" />
+
+        <TextView
+            android:id="@+id/eventInformationText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/app_name" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -127,7 +127,7 @@ public class HttpClient{
         try
         {
             HttpURLConnection conection = (HttpURLConnection) new URL(baseUrl+ "/event").openConnection();
-            conection.setRequestProperty("Authorizaation", authToken);
+            conection.setRequestProperty("Authorization", authToken);
             conection.setRequestMethod("GET");
             try {
                 AllEventsResponse response = (AllEventsResponse) parseResponse(conection,AllEventsResponse.class);
@@ -154,7 +154,7 @@ public class HttpClient{
         try
         {
             HttpURLConnection conection = (HttpURLConnection) new URL(baseUrl+ "/person").openConnection();
-            conection.setRequestProperty("Authorizaation", authToken);
+            conection.setRequestProperty("Authorization", authToken);
             conection.setRequestMethod("GET");
             try {
                 AllPersonResponse response = (AllPersonResponse) parseResponse(conection,AllPersonResponse.class);
@@ -180,7 +180,7 @@ public class HttpClient{
         try
         {
             HttpURLConnection conection = (HttpURLConnection) new URL(baseUrl+ "/event/"+eventId).openConnection();
-            conection.setRequestProperty("Authorizaation", authToken);
+            conection.setRequestProperty("Authorization", authToken);
             conection.setRequestMethod("GET");
             try {
                 EventDetailsResponse response = (EventDetailsResponse) parseResponse(conection,EventDetailsResponse.class);

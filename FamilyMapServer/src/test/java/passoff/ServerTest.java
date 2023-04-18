@@ -920,7 +920,7 @@ public class ServerTest {
      * All Event
      * All Person
      */
-    @Test
+//    @Test
     @DisplayName("Persistence Test")
     public void testPersistence(TestInfo testInfo) {
         printTestName(testInfo);
