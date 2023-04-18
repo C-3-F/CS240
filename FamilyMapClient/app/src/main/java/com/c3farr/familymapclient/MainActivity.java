@@ -1,6 +1,8 @@
 package com.c3farr.familymapclient;
 
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -22,9 +24,20 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Lis
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         Fragment fragment = fragmentManager.findFragmentById(R.id.fragmentFrameLayout);
 
+        DataCache instance = DataCache.getInstance();
+        Log.d("MainActivity", "inOnCreate");
+        Log.d("MainActivity", "Display Map: " + instance.displayMapFragment);
+
+
         if (fragment == null)
         {
-            fragment = createLoginFragment();
+            if (instance.displayMapFragment)
+            {
+                fragment = new MapsFragment();
+            } else {
+                instance.Clear();
+                fragment = createLoginFragment();
+            }
 
             fragmentManager.beginTransaction()
                     .add(R.id.fragmentFrameLayout,fragment)
@@ -32,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Lis
         } else {
             if (fragment instanceof LoginFragment) {
                 ((LoginFragment) fragment).registerListener(this);
+            } else {
+                notifySwitch();
             }
         }
 
@@ -46,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements LoginFragment.Lis
 
     @Override
     public void notifySwitch() {
+        Log.d("Main Activity", "Notify Switch");
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         Fragment fragment = new MapsFragment();
 

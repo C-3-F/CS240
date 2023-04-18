@@ -28,8 +28,21 @@
     <string name="female">Female</string>
     <string name="searchIconSelected">Search Selected</string>
     <string name="settingsIconSelected">Settings Selected</string>
-
-
-
+    <string name="lifeStoryLinesSetting">Life Story Lines</string>
+    <string name="lifeStoryLinesSubSetting">SHOW LIFE STORY LINES</string>
+    <string name="familyTreeLinesSetting">Family Tree Lines</string>
+    <string name="familyTreeLinesSubSetting">SHOW FAMILY TREE LINES</string>
+    <string name="spouseLinesSetting">Spouse Lines</string>
+    <string name="spouseLinesSubSetting">SHOW SPOUSE LINES</string>
+    <string name="fathersSideSetting">Father\'s Side</string>
+    <string name="fathersSideSubSetting">FILTER BY FATHER\'S SIDE OF THE FAMILY</string>
+    <string name="mothersSideSetting">Mother\'s Side</string>
+    <string name="mothersSideSubSetting">FILTER BY MOTHER\'S SIDE OF THE FAMILY</string>
+    <string name="maleEventsSetting">Male Events</string>
+    <string name="maleEventsSubSetting">FILTER EVENTS BASED ON GENDER</string>
+    <string name="femaleEventsSetting">Female Events</string>
+    <string name="femaleEventsSubSetting">FILTER EVENTS BASED ON GENDER</string>
+    <string name="logout">Logout</string>
+    <string name="logoutCaption">RETURN TO THE LOGIN SCREEN</string>
 
 </resources>

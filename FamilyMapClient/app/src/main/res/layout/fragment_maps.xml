@@ -13,6 +13,7 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:uiZoomControls="true"
             tools:context=".ui.map.MapsFragment"/>
 
     <LinearLayout
@@ -21,6 +22,7 @@
         android:layout_height="100dp"
         android:gravity="center|center_vertical"
         android:orientation="horizontal"
+        android:padding="10dp"
         tools:visibility="gone">
 
 

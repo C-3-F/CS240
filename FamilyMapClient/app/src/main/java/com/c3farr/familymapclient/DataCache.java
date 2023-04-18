@@ -20,6 +20,7 @@ public class DataCache {
     public HashMap<String,Person> allPersons;
     public HashMap<String,TreeSet<Event>> allEvents;
     public HashMap<String, Float> eventTypeColors = new HashMap<String, Float>();
+    public boolean displayMapFragment = false;
 
 
 
@@ -43,14 +44,14 @@ public class DataCache {
         TreeSet<Event> outEvents = new TreeSet<Event>(new EventComparator());
         if (gender == "m") {
             for (Person person : allPersons.values()) {
-                if(person.gender == "m") {
+                if(person.gender.equals("m")) {
                     outEvents.addAll(allEvents.get(person.personID));
                 }
             }
         } else {
             for (Person person : allPersons.values())
             {
-                if (person.gender == "f") {
+                if (person.gender.equals("f")) {
                     outEvents.addAll(allEvents.get(person.personID));
                 }
             }
@@ -62,24 +63,24 @@ public class DataCache {
         TreeSet<Event> outEvents = new TreeSet<Event>(new EventComparator());
         outEvents.addAll(allEvents.get(rootPerson.personID));
         if (side == "mother") {
-            getEventsBySideHelper(outEvents, rootPerson.motherID);
+            getEventsBySideHelper(outEvents, rootPerson.motherID, false);
         } else {
-            getEventsBySideHelper(outEvents, rootPerson.fatherID);
+            getEventsBySideHelper(outEvents, rootPerson.fatherID, false);
         }
         return outEvents;
     }
 
-    private void getEventsBySideHelper(TreeSet<Event> events, String personId) {
+    private void getEventsBySideHelper(TreeSet<Event> events, String personId, boolean isSpouse) {
         events.addAll(allEvents.get(personId));
         Person thisPerson = allPersons.get(personId);
         if (thisPerson.fatherID != null) {
-            getEventsBySideHelper(events,thisPerson.fatherID);
+            getEventsBySideHelper(events,thisPerson.fatherID, false);
         }
         if (thisPerson.motherID != null) {
-            getEventsBySideHelper(events,thisPerson.motherID);
+            getEventsBySideHelper(events,thisPerson.motherID, false);
         }
-        if (thisPerson.spouseID != null) {
-            getEventsBySideHelper(events, thisPerson.spouseID);
+        if (thisPerson.spouseID != null && !isSpouse && !thisPerson.personID.equals(rootPerson.fatherID) && !thisPerson.personID.equals(rootPerson.motherID)) {
+            getEventsBySideHelper(events, thisPerson.spouseID, true);
         }
     }
 
@@ -89,15 +90,23 @@ public class DataCache {
         Float out = eventTypeColors.get(eventType);
         if (out == null)
         {
-            Float max = (float) 0.0;
+            Float max = (float) -50.0;
             for (Float num : eventTypeColors.values())
             {
                 if (num > max) { max = num; }
             }
-            out = max + 30;
+            out = max + 50;
+            if (out > 360f) {
+                out = 0 + (out - 360f);
+            }
             eventTypeColors.put(eventType,out);
         }
         return out;
+    }
+
+    public void Clear()
+    {
+        instance = null;
     }
 
     private DataCache(){ }
