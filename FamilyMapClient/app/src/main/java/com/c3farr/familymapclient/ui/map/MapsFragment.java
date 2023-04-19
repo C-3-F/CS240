@@ -201,44 +201,9 @@ public class MapsFragment extends Fragment {
 
 
     private void renderMarkers(GoogleMap googleMap) {
-        Log.d("RenderMarkers", "Rendering Markers");
-        DataCache instance = DataCache.getInstance();
-        Settings settings = instance.settings;
-        TreeSet<Event> genderEvents = new TreeSet<Event>(new EventComparator());
-        TreeSet<Event> sideEvents = new TreeSet<Event>(new EventComparator());
-        boolean usingSideFilter = false;
-        boolean usingGenderFilter = false;
-        if (settings.FathersSide) {
-            sideEvents.addAll(instance.getEventsBySide("father"));
-            usingSideFilter = true;
-        }
-        if (settings.MothersSide) {
-            sideEvents.addAll(instance.getEventsBySide("mother"));
-            usingSideFilter = true;
-        }
-        if (settings.MaleEvents) {
-            genderEvents.addAll(instance.getEventsByGender("m"));
-            usingGenderFilter = true;
-        }
-        if (settings.FemaleEvents) {
-            genderEvents.addAll(instance.getEventsByGender("f"));
-            usingGenderFilter = true;
-        }
-
-        TreeSet<Event> eventsToRender;
-        if (usingSideFilter && usingGenderFilter) {
-            sideEvents.retainAll(genderEvents);
-            eventsToRender = sideEvents;
-        } else if (usingSideFilter) {
-            eventsToRender = sideEvents;
-        } else if (usingGenderFilter) {
-            eventsToRender = genderEvents;
-        } else {
-            eventsToRender = new TreeSet<>();
-        }
-
+        instance = DataCache.getInstance();
+        TreeSet<Event> eventsToRender = instance.filterEvents();
         currentVisibleEvents = eventsToRender;
-        instance.currentEvents = currentVisibleEvents;
 
         Log.d("MapsFragment", "Events Num: " + eventsToRender.size());
 

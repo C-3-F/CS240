@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.c3farr.familymapclient.uiModels.Searcher;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
@@ -49,36 +50,21 @@ public class SearchActivity extends AppCompatActivity {
         Log.d("SearchActivity", "Persons Size: " + searchPersons.size());
 
 
-
-
-
         SearchView searchView = findViewById(R.id.searchView);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String text) {
                 Log.d("SearchActivity", "Search Clicked! Searching...");
-                searchEvents = new ArrayList<>();
-                searchPersons = new ArrayList<>();
+                searchEvents = Searcher.searchEvents(text);
+                searchPersons = Searcher.searchPersons(text);
 
-                for(Event event : instance.getAllSortedEvents()) {
-                    if ((event.eventType.toLowerCase().contains(text) || event.city.toLowerCase().contains(text) || event.country.toLowerCase().contains(text) || ((Integer) event.year).toString().contains(text)) && instance.currentEvents.contains(event)) {
-                        searchEvents.add(event);
-                    }
-                }
-                Log.d("SearchActivity", String.format("Found %d events",searchEvents.size()));
-
-
-                for (Person person : instance.allPersons.values()){
-                    if (person.firstName.toLowerCase().contains(text) || person.lastName.toLowerCase().contains(text)) {
-                        searchPersons.add(person);
-                    }
-                }
-                Log.d("SearchActivity", String.format("Found %d persons",searchPersons.size()));
+                Log.d("SearchActivity", String.format("Found %d events", searchEvents.size()));
+                Log.d("SearchActivity", String.format("Found %d persons", searchPersons.size()));
 
                 RecyclerView recyclerView = findViewById(R.id.searchRecyclerView);
                 recyclerView.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
-                RecyclerViewAdapter adapter = new RecyclerViewAdapter(searchEvents,searchPersons);
+                RecyclerViewAdapter adapter = new RecyclerViewAdapter(searchEvents, searchPersons);
                 recyclerView.setAdapter(adapter);
                 return false;
             }
@@ -164,8 +150,7 @@ public class SearchActivity extends AppCompatActivity {
             icon = view.findViewById(R.id.searchResultIcon);
         }
 
-        public void bind(Event event)
-        {
+        public void bind(Event event) {
             Log.d("SearchActivity", "Binding Event!");
             this.event = event;
             String eventInfoText = event.eventType + " | " + event.city + ", " + event.country + " | " + event.year;
@@ -179,7 +164,7 @@ public class SearchActivity extends AppCompatActivity {
 
         }
 
-        public void bind(Person person){
+        public void bind(Person person) {
             Log.d("SearchActivity", "Binding Person!");
 
             this.person = person;
@@ -188,8 +173,7 @@ public class SearchActivity extends AppCompatActivity {
 
             info1.setText(fullName);
 
-            if (person.gender.equals("m"))
-            {
+            if (person.gender.equals("m")) {
                 info2.setText("Male");
             } else {
                 info2.setText("Female");
@@ -197,8 +181,7 @@ public class SearchActivity extends AppCompatActivity {
 
             Drawable markerIcon;
 
-            if (person.gender.equals("m"))
-            {
+            if (person.gender.equals("m")) {
                 markerIcon = new IconDrawable(itemView.getContext(), FontAwesomeIcons.fa_male).colorRes(R.color.male_icon).sizeDp(15);
             } else {
                 markerIcon = new IconDrawable(itemView.getContext(), FontAwesomeIcons.fa_female).colorRes(R.color.female_icon).sizeDp(15);
@@ -208,14 +191,13 @@ public class SearchActivity extends AppCompatActivity {
 
         @Override
         public void onClick(View view) {
-            if (viewType == PERSON_LIST_GROUP)
-            {
+            if (viewType == PERSON_LIST_GROUP) {
                 Intent i = new Intent(view.getContext(), PersonActivity.class);
-                i.putExtra("selectedPersonId",person.personID);
+                i.putExtra("selectedPersonId", person.personID);
                 startActivity(i);
             } else {
                 Intent i = new Intent(view.getContext(), EventActivity.class);
-                i.putExtra("selectedEventId",event.eventID);
+                i.putExtra("selectedEventId", event.eventID);
                 startActivity(i);
             }
         }

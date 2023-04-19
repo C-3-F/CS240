@@ -63,8 +63,7 @@ public class PersonActivity extends AppCompatActivity {
         thisPersonsEvents = instance.allEvents.get(personId);
         thisPersonsEvents.retainAll(instance.currentEvents);
 
-        thisPersonsFamily = new ArrayList<>();
-        generatePersonInfos(personId);
+        thisPersonsFamily = PersonInfo.generatePersonsFamily(personId);
 
         expandableListView.setAdapter(new ExpandableListAdapter(thisPersonsEvents, thisPersonsFamily,thisPerson));
     }
@@ -79,30 +78,6 @@ public class PersonActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void generatePersonInfos(String personId) {
-        Person thisPerson = instance.allPersons.get(personId);
-        //Find Children from all People
-        for (Person person : instance.allPersons.values()) {
-            if ((person.fatherID != null && person.fatherID.equals(personId)) || (person.motherID != null && person.motherID.equals(personId))) {
-                thisPersonsFamily.add(new PersonInfo(person, "Child"));
-            }
-        }
-
-        Person father = instance.allPersons.get(thisPerson.fatherID);
-        Person mother = instance.allPersons.get(thisPerson.motherID);
-        Person spouse = instance.allPersons.get(thisPerson.spouseID);
-        if (father != null) {
-            thisPersonsFamily.add(new PersonInfo(father, "Father"));
-        }
-        if (mother != null) {
-            thisPersonsFamily.add(new PersonInfo(mother, "Mother"));
-        }
-        if (spouse != null) {
-            thisPersonsFamily.add(new PersonInfo(spouse, "Spouse"));
-        }
-
     }
 
 
