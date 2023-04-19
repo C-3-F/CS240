@@ -61,6 +61,7 @@ public class PersonActivity extends AppCompatActivity {
 
         ExpandableListView expandableListView = findViewById(R.id.personExpandableListView);
         thisPersonsEvents = instance.allEvents.get(personId);
+        thisPersonsEvents.retainAll(instance.currentEvents);
 
         thisPersonsFamily = new ArrayList<>();
         generatePersonInfos(personId);
@@ -264,10 +265,9 @@ public class PersonActivity extends AppCompatActivity {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //TODO: Create Event Activity
-//                    Intent i = new Intent(itemView.getContext(),PersonActivity.class);
-//                    i.putExtra("selectedPersonId",personInfos.get(childPosition).personID);
-//                    startActivity(i);
+                    Intent i = new Intent(itemView.getContext(),EventActivity.class);
+                    i.putExtra("selectedEventId",events.get(childPosition).eventID);
+                    startActivity(i);
                 }
             });
         }

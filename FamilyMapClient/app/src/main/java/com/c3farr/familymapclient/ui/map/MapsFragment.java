@@ -21,11 +21,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.c3farr.familymapclient.DataCache;
+import com.c3farr.familymapclient.MainActivity;
 import com.c3farr.familymapclient.PersonActivity;
 import com.c3farr.familymapclient.R;
+import com.c3farr.familymapclient.SearchActivity;
 import com.c3farr.familymapclient.SettingsActivity;
 import com.c3farr.familymapclient.uiModels.EventComparator;
 import com.c3farr.familymapclient.uiModels.Settings;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -39,6 +42,7 @@ import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.TreeSet;
 
 import models.Event;
@@ -48,9 +52,12 @@ public class MapsFragment extends Fragment {
 
     private GoogleMap map;
     private ArrayList<Polyline> lines = new ArrayList<>();
+    private HashMap<String,Marker> markers = new HashMap<>();
     private TreeSet<Event> currentVisibleEvents;
     private DataCache instance;
     private Event selectedEvent;
+    private String presetEventId;
+    private boolean showOptionsMenu = true;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -59,6 +66,14 @@ public class MapsFragment extends Fragment {
             map = googleMap;
             renderMarkers(googleMap);
             googleMap.setOnMarkerClickListener(onMarkerClick);
+            if (presetEventId != null)
+            {
+                Marker marker = markers.get(presetEventId);
+                Event markerEvent = (Event) marker.getTag();
+                onMarkerClick.onMarkerClick(marker);
+                googleMap.moveCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+            }
+            Log.d("MapsFragment","PresetEventId: " + presetEventId);
         }
     };
 
@@ -67,7 +82,15 @@ public class MapsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d("MapsFragment", "On Create!");
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
+
+        Bundle args = this.getArguments();
+        if (args != null)
+        {
+            showOptionsMenu = args.getBoolean("showOptionsMenu");
+            presetEventId = args.getString("selectedEventId");
+        }
+
+        setHasOptionsMenu(showOptionsMenu);
     }
 
     @Nullable
@@ -112,13 +135,19 @@ public class MapsFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.search_icon:
-                Toast.makeText(this.getContext(), R.string.searchIconSelected, Toast.LENGTH_LONG).show();
+//                Toast.makeText(this.getContext(), R.string.searchIconSelected, Toast.LENGTH_LONG).show();
+                Intent searchIntent = new Intent(this.getContext(), SearchActivity.class);
+                startActivity(searchIntent);
                 return true;
             case R.id.settings_icon:
 //                Toast.makeText(this.getContext(),R.string.settingsIconSelected,Toast.LENGTH_LONG).show();
                 Intent i = new Intent(this.getContext(), SettingsActivity.class);
                 startActivity(i);
                 return true;
+            case android.R.id.home:
+                Intent home = new Intent(this.getContext(), MainActivity.class);
+                home.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(home);
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -209,6 +238,7 @@ public class MapsFragment extends Fragment {
         }
 
         currentVisibleEvents = eventsToRender;
+        instance.currentEvents = currentVisibleEvents;
 
         Log.d("MapsFragment", "Events Num: " + eventsToRender.size());
 
@@ -218,6 +248,7 @@ public class MapsFragment extends Fragment {
                     new MarkerOptions()
                             .position(new LatLng(event.latitude, event.longitude))
                             .icon(BitmapDescriptorFactory.defaultMarker(instance.getColor(event.eventType))));
+            markers.put(event.eventID,marker);
             marker.setTag(event);
         }
     }

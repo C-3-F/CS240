@@ -19,6 +19,7 @@ public class DataCache {
     public HttpClient httpClient;
     public HashMap<String,Person> allPersons;
     public HashMap<String,TreeSet<Event>> allEvents;
+    public TreeSet<Event> currentEvents;
     public HashMap<String, Float> eventTypeColors = new HashMap<String, Float>();
     public boolean displayMapFragment = false;
 
