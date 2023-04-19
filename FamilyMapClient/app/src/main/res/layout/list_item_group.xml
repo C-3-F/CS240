@@ -7,11 +7,13 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/list_item_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAllCaps="true"
         android:textStyle="bold"
         android:textSize="18sp"
+        android:layout_marginStart="64dp"
         tools:text="The Text"/>
 
 </LinearLayout>

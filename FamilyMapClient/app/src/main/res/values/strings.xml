@@ -45,5 +45,7 @@
     <string name="femaleEventsSubSetting">FILTER EVENTS BASED ON GENDER</string>
     <string name="logout">Logout</string>
     <string name="logoutCaption">RETURN TO THE LOGIN SCREEN</string>
+    <string name="personExpandalbleListTitle">FAMILY</string>
+    <string name="eventsExpandalbleListTitle">LIFE EVENTS</string>
 
 </resources>

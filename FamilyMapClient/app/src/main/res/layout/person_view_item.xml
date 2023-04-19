@@ -13,7 +13,7 @@
 
     <ImageView
         android:id="@+id/personExpandableListIcon"
-        android:layout_width="100dp"
+        android:layout_width="40dp"
         android:layout_height="match_parent"
         android:contentDescription="Event or Person Icon" />
 
@@ -26,13 +26,13 @@
             android:id="@+id/personExpandableListInformationText1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center" />
+            android:gravity="left" />
 
         <TextView
             android:id="@+id/personExpandableListInformationText2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center" />
+            android:gravity="left" />
 
     </LinearLayout>
 </LinearLayout>
