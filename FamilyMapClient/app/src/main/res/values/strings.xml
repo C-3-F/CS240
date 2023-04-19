@@ -24,6 +24,7 @@
     <string name="serverNameHintLabel">Server Name</string>
     <string name="serverPortHintLabel">Server Port</string>
     <string name="genderLabel">Gender:</string>
+    <string name="genderHintLabel">Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="searchIconSelected">Search Selected</string>

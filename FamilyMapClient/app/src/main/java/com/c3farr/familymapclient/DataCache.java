@@ -62,6 +62,8 @@ public class DataCache {
     public TreeSet<Event> getEventsBySide(String side) {
         TreeSet<Event> outEvents = new TreeSet<Event>(new EventComparator());
         outEvents.addAll(allEvents.get(rootPerson.personID));
+        outEvents.addAll(allEvents.get(rootPerson.spouseID));
+
         if (side == "mother") {
             getEventsBySideHelper(outEvents, rootPerson.motherID, false);
         } else {

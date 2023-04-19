@@ -6,6 +6,6 @@ public class Settings {
     public boolean SpouseLines = true;
     public boolean FathersSide = true;
     public boolean MothersSide = true;
-    public boolean MaleEvents = false;
-    public boolean FemaleEvents = false;
+    public boolean MaleEvents = true;
+    public boolean FemaleEvents = true;
 }

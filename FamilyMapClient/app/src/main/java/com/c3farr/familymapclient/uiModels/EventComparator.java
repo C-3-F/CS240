@@ -10,13 +10,18 @@ public class EventComparator implements Comparator<Event> {
     public int compare(Event event, Event t1) {
         if (event.equals(t1)) {
             return 0;
-        } else if (event.year == t1.year) {
-//            return event.eventType.compareTo(t1.eventType);
-            return -1;
         } else if (event.year > t1.year) {
             return 1;
-        } else {
+        } else if (event.year < t1.year) {
             return -1;
+        } else {
+            int stringCompare = event.eventType.compareTo(t1.eventType);
+            if (stringCompare == 0)
+            {
+                return event.eventID.compareTo(t1.eventID);
+            } else {
+                return stringCompare;
+            }
         }
     }
 }

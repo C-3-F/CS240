@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.c3farr.familymapclient.DataCache;
+import com.c3farr.familymapclient.PersonActivity;
 import com.c3farr.familymapclient.R;
 import com.c3farr.familymapclient.SettingsActivity;
 import com.c3farr.familymapclient.uiModels.EventComparator;
@@ -49,6 +50,7 @@ public class MapsFragment extends Fragment {
     private ArrayList<Polyline> lines = new ArrayList<>();
     private TreeSet<Event> currentVisibleEvents;
     private DataCache instance;
+    private Event selectedEvent;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -82,12 +84,19 @@ public class MapsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Log.d("MapsFragment", "View Created!");
         view.findViewById(R.id.eventInformation).setVisibility(View.GONE);
+        view.findViewById(R.id.eventInformation).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getContext(), PersonActivity.class);
+                i.putExtra("selectedPersonId",selectedEvent.personID);
+                startActivity(i);
+            }
+        });
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
-
 
     }
 
@@ -120,6 +129,7 @@ public class MapsFragment extends Fragment {
         public boolean onMarkerClick(@NonNull Marker marker) {
             instance = DataCache.getInstance();
             Event thisEvent = (Event) marker.getTag();
+            selectedEvent = thisEvent;
             Person thisPerson = instance.allPersons.get(thisEvent.personID);
             Log.d("MarkerClick", "personID: " + thisPerson.personID);
             Log.d("MarkerClick", "personGender: " + thisPerson.gender);
@@ -229,6 +239,7 @@ public class MapsFragment extends Fragment {
         Log.d("MapsFragment", "Drawing Life Story Lines");
         TreeSet<Event> thisPersonsEvents = instance.allEvents.get(selectedEvent.personID);
         for (Event event : thisPersonsEvents) {
+            Log.d("MapsFragment", "Contains?: " + currentVisibleEvents.contains(event));
             if (currentVisibleEvents.contains(event) && !event.equals(thisPersonsEvents.last())) {
                 drawAndRemoveLine(event, thisPersonsEvents.higher(event), 0xff3DDC84, 15);
             }
