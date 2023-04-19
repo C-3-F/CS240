@@ -60,7 +60,7 @@ public class HttpClient{
             try {
                 postContent(connection,request);
                 LoginResponse response = (LoginResponse) parseResponse(connection, LoginResponse.class);
-                Log.d("login","gotResponse");
+//                Log.d("login","gotResponse");
                 return response;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -84,7 +84,7 @@ public class HttpClient{
             try {
                 postContent(connection, request);
                 RegisterResponse response = (RegisterResponse) parseResponse(connection, RegisterResponse.class);
-                Log.d("registr","gotResponse");
+//                Log.d("registr","gotResponse");
                 return response;
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -102,7 +102,7 @@ public class HttpClient{
     public PersonDetailsResponse getPersonDetails(String personId) {
         try {
             PersonRequest request = new PersonRequest(authToken,personId);
-            Log.d(logTag,"Get Person Details");
+//            Log.d(logTag,"Get Person Details");
             HttpURLConnection connection = (HttpURLConnection) new URL(baseUrl + "/person/"+request.personID).openConnection();
             connection.setRequestProperty("Authorization",request.authToken);
             connection.setRequestMethod("GET");
@@ -213,7 +213,7 @@ public class HttpClient{
             writer.flush();
             writer.close();
             out.close();
-            Log.d("postContent","finished postContent");
+//            Log.d("postContent","finished postContent");
     }
 
     private Object parseResponse(HttpURLConnection connection, Object T) throws IOException {
@@ -221,9 +221,9 @@ public class HttpClient{
         {
             return null;
         }
-        Log.d(logTag,"parsingResponse");
+//        Log.d(logTag,"parsingResponse");
         InputStream in = new BufferedInputStream(connection.getInputStream());
-        Log.d(logTag,"created streams");
+//        Log.d(logTag,"created streams");
         StringBuilder sb = new StringBuilder();
         InputStreamReader sr = new InputStreamReader(in);
         char[] buf = new char[1024];
@@ -232,7 +232,7 @@ public class HttpClient{
             sb.append(buf, 0, len);
         }
         String jsonString = sb.toString();
-        Log.d(logTag,"Json: " +jsonString);
+//        Log.d(logTag,"Json: " +jsonString);
 
 
         Object obj = gson.fromJson(jsonString, (Type) T);

@@ -17,7 +17,7 @@ public class DataCache {
     public String authToken;
     public Settings settings = new Settings();
     public HttpClient httpClient;
-    public HashMap<String,Person> allPersons;
+    public HashMap<String,Person> allPersons = new HashMap<>();
     public HashMap<String,TreeSet<Event>> allEvents;
     public TreeSet<Event> currentEvents;
     public HashMap<String, Float> eventTypeColors = new HashMap<String, Float>();

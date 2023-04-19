@@ -10,6 +10,7 @@ import models.Person;
 public class Searcher {
 
     public static ArrayList<Event> searchEvents(String text) {
+        text = text.toLowerCase();
         ArrayList<Event> outEvents = new ArrayList<>();
         DataCache instance = DataCache.getInstance();
         for (Event event : instance.getAllSortedEvents()) {
@@ -21,6 +22,7 @@ public class Searcher {
     }
 
     public static ArrayList<Person> searchPersons(String text) {
+        text = text.toLowerCase();
         ArrayList<Person> outPersons = new ArrayList<>();
         DataCache instance = DataCache.getInstance();
         for (Person person : instance.allPersons.values()) {
